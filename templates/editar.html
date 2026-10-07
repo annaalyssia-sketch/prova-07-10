@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>editar usuario</title>
+</head>
+<body>
+    <h1>Editar usuario</h1>
+
+    <form method="post">
+        <label>Nome</label>
+        <input type="text" name="nome" value="{{usuario[1]}}">
+    
+        <label>Email</label>
+        <input type="email" name="email" value="{{usuario[2]}}">
+
+        <label>Senha</label>
+        <input type="password" name="senha" value="{{usuario[3]}}">
+
+    <button type="submit">Salvar</button>
+
+    </form>
+</body>
+</html>

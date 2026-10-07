@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>usuarios</title>
+</head>
+<body>
+    <h1>Lista de usuarios</h1>
+
+    {% for usuario in usuarios %}
+    <p>
+        id: {{usuario[0]}}
+        nome: {{usuario[1]}}
+        email: {{usuario[2]}}
+    </p>
+
+    <a href="/editar/{{usuario[0]}}"> editar </a>
+    
+    <a href="/excluir/{{usuario[0]}}"> excluir</a>
+
+    {% endfor %}
+</body>
+</html>
