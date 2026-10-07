@@ -4,7 +4,7 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key ="chave-secreta"
 
-def conectr_banco():
+def conectar_banco():
     conexao = sqlite3.connect("banco.db")
     cursor = conexao.cursor()
     return conexao, cursor
@@ -25,60 +25,6 @@ def criar_tabela():
 
     criar_tabela()
 
-@app.route("/")
-def inicio():
-    return "Olá mundo"
-
-@app.route("/usuarios")
-def usuarios():
-    banco = conectar_banco()
-
-    dados = banco_execute(" SELECT * FROM usuarios"). fetchall()
-
-    banco.close()
-
-    return render_template("usuarios.html", usuarios = dados)
-
-@app.route("/editar/<int:id> methods = ["GET", "POST"})
-def editar():
-
-    banco= conectar_banco()
-
-    usuario = banco.execute(
-        "SELECT * FROM usuarios WHERE id = ?", (id,)
-    ).fetchone()
-
-        nome = request.form["nome"]
-        email = request.form["email"]
-        senha = request.form["senha"]
-
-        banco = conectar_banco()
-
-        banco.execute(
-            """UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?""", 
-            (nome, email, senha, id)
-        )
-
-        banco.commit()
-        banco.close()
-
-        return redirect("/usuarios")
-        return render_template("editar.html", usuario = usuario)
-
-@app.route("/excluir/int:id")
-def excluir(id):
-
-    banco = conectar_banco
-
-    banco_execute(
-        "DELETE FROM usuarios WHERE id = ?", (id,)
-    )
-
-    banco.commit()
-    banco.close()
-
-    return redirect("/usuarios")
-    
 @app.route("/cadastro", methods = ["GET", "POST"])
 def cadastro():
 
@@ -139,6 +85,56 @@ def logout():
     session.pop("usuario_id", none)
 
     return redirect("/login")
+
+@app.route("/usuarios")
+def usuarios():
+    banco = conectar_banco()
+
+    dados = banco_execute(" SELECT * FROM usuarios"). fetchall()
+
+    banco.close()
+
+    return render_template("usuarios.html", usuarios = dados)
+
+@app.route("/excluir/int:id")
+def excluir(id):
+
+    banco = conectar_banco
+
+    banco_execute(
+        "DELETE FROM usuarios WHERE id = ?", (id,)
+    )
+
+    banco.commit()
+    banco.close()
+
+    return redirect("/usuarios")
+
+@app.route("/editar/<int:id> methods = ["GET", "POST"})
+def editar():
+
+    banco= conectar_banco()
+
+    usuario = banco.execute(
+        "SELECT * FROM usuarios WHERE id = ?", (id,)
+    ).fetchone()
+
+        nome = request.form["nome"]
+        email = request.form["email"]
+        senha = request.form["senha"]
+
+        banco = conectar_banco()
+
+        banco.execute(
+            """UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?""", 
+            (nome, email, senha, id)
+        )
+
+        banco.commit()
+        banco.close()
+
+        return redirect("/usuarios")
+        return render_template("editar.html", usuario = usuario)
 
 if __name__ == "__main__":
     app.run(debug = True)
